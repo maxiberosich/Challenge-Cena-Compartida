@@ -1,8 +1,8 @@
 package com.maxicb.cenas_compartidas.controller;
 
-import com.maxicb.cenas_compartidas.dto.ActualizarPlatilloDTO;
-import com.maxicb.cenas_compartidas.dto.CrearPlatilloDTO;
-import com.maxicb.cenas_compartidas.dto.DatosPlatilloDTO;
+import com.maxicb.cenas_compartidas.dto.platillo.ActualizarPlatilloDTO;
+import com.maxicb.cenas_compartidas.dto.platillo.CrearPlatilloDTO;
+import com.maxicb.cenas_compartidas.dto.platillo.DatosPlatilloDTO;
 import com.maxicb.cenas_compartidas.service.PlatilloService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +17,11 @@ public class PlatilloController {
     @Autowired
     private PlatilloService platilloService;
 
-    @PostMapping
-    public DatosPlatilloDTO crearPlatillo(@RequestBody @Valid CrearPlatilloDTO crearPlatilloDTO){
-        return platilloService.crearPlatillo(crearPlatilloDTO);
+    @PostMapping("/{idUsuario}/cargar-platillo")
+    public DatosPlatilloDTO crearPlatillo(
+            @PathVariable Long idUsuario,
+            @RequestBody @Valid CrearPlatilloDTO crearPlatilloDTO){
+        return platilloService.crearPlatillo(crearPlatilloDTO, idUsuario);
     }
 
     @GetMapping("/todos")
@@ -32,11 +34,12 @@ public class PlatilloController {
         return platilloService.buscarPlatilloPorId(idPlatillo);
     }
 
-    @PutMapping("/{idPlatillo}")
+    @PutMapping("/{idUsuario}/{idPlatillo}")
     public DatosPlatilloDTO actualizarPlatillo(
+            @PathVariable Long idUsuario,
             @PathVariable Long idPlatillo,
             @RequestBody @Valid ActualizarPlatilloDTO actualizarPlatilloDTO){
-        return platilloService.actualizarPlatillo(idPlatillo, actualizarPlatilloDTO);
+        return platilloService.actualizarPlatillo(idPlatillo, actualizarPlatilloDTO, idUsuario);
     }
 
     @DeleteMapping("/{idPlatillo}")

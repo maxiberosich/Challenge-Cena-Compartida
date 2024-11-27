@@ -1,7 +1,6 @@
 package com.maxicb.cenas_compartidas.model;
 
-import com.maxicb.cenas_compartidas.dto.CrearPlatilloDTO;
-import com.maxicb.cenas_compartidas.dto.DatosPlatilloDTO;
+import com.maxicb.cenas_compartidas.dto.platillo.CrearPlatilloDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,13 +21,16 @@ public class Platillo {
     @Enumerated(EnumType.STRING)
     private TipoComida tipoComida;
 
-    private String nombreCocinero;
     private String descripcion;
 
-    public Platillo(CrearPlatilloDTO crearPlatilloDTO) {
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_usuario")
+    private Usuario usuario;
+
+    public Platillo(CrearPlatilloDTO crearPlatilloDTO, Usuario usuario) {
         this.nombrePlatillo = crearPlatilloDTO.nombrePlatillo();
         this.tipoComida = crearPlatilloDTO.tipoComida();
-        this.nombreCocinero = crearPlatilloDTO.nombreCocinero();
         this.descripcion = crearPlatilloDTO.descripcion();
+        this.usuario = usuario;
     }
 }
