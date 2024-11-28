@@ -4,6 +4,7 @@ import com.maxicb.cenas_compartidas.dto.platillo.ActualizarPlatilloDTO;
 import com.maxicb.cenas_compartidas.dto.platillo.CrearPlatilloDTO;
 import com.maxicb.cenas_compartidas.dto.platillo.DatosPlatilloDTO;
 import com.maxicb.cenas_compartidas.dto.usuario.DatosUsuarioDTO;
+import com.maxicb.cenas_compartidas.exception.ValidacionDeIntegridad;
 import com.maxicb.cenas_compartidas.model.Platillo;
 import com.maxicb.cenas_compartidas.repository.PlatilloRepository;
 import com.maxicb.cenas_compartidas.util.PlatilloMapper;
@@ -45,13 +46,13 @@ public class PlatilloService {
 
     public DatosPlatilloDTO buscarPlatilloPorId(Long idPlatillo){
         Platillo platillo = platilloRepository.findById(idPlatillo)
-                .orElseThrow(() -> new RuntimeException(("Platillo no encontrado")));
+                .orElseThrow(() -> new ValidacionDeIntegridad(("Platillo no encontrado")));
         return platilloMapper.toDto(platillo);
     }
 
     public DatosPlatilloDTO actualizarPlatillo(Long idPlatillo, ActualizarPlatilloDTO actualizarPlatilloDTO, Long idUsuario){
         Platillo platilloEncontrado = platilloRepository.findById(idPlatillo)
-                .orElseThrow(() -> new RuntimeException(("Platillo no encontrado")));
+                .orElseThrow(() -> new ValidacionDeIntegridad(("Platillo no encontrado")));
 
         DatosUsuarioDTO datosUsuarioDTO = usuarioService.buscarUsuarioPorId(idUsuario);
 
@@ -67,7 +68,7 @@ public class PlatilloService {
 
     public void borrarPlatillo(Long idPlatillo){
         Platillo platillo = platilloRepository.findById(idPlatillo)
-                .orElseThrow(() -> new RuntimeException(("Platillo no encontrado")));
+                .orElseThrow(() -> new ValidacionDeIntegridad(("Platillo no encontrado")));
         platilloRepository.delete(platillo);
     }
 
